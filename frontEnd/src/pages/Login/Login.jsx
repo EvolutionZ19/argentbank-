@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setFirstName } from "../../store/userReducer";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,11 +24,31 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("✅ Token :", data.body.token);
-        localStorage.setItem("authToken", data.body.token);
-        navigate("/profile");
+        const token = data.body.token;
+        localStorage.setItem("authToken", token);
+
+        // Récupération du profil juste après login
+        const profileResponse = await fetch(
+          "http://localhost:3001/api/v1/user/profile",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const profileData = await profileResponse.json();
+
+        if (profileResponse.ok) {
+          dispatch(setFirstName(profileData.body.firstName));
+          navigate("/profile");
+        } else {
+          console.error("Erreur récupération profil :", profileData.message);
+        }
       } else {
-        console.error("❌ Erreur :", data.message);
+        console.error("Erreur de connexion :", data.message);
       }
     } catch (error) {
       console.error("Erreur réseau :", error);
