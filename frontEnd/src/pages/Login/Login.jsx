@@ -20,6 +20,7 @@ function Login() {
 
       if (response.ok) {
         console.log("✅ Token :", data.body.token);
+        localStorage.setItem("authToken", data.body.token);
       } else {
         console.error("❌ Erreur :", data.message);
       }
