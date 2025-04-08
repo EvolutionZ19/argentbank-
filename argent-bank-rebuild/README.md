@@ -1,12 +1,32 @@
-# React + Vite
+# Argent Bank - Front-End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Projet 13 du parcours Développeur Front-End chez OpenClassrooms  
+> Application bancaire React avec gestion d’authentification et affichage des transactions utilisateur.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧾 Objectifs pédagogiques
 
-## Expanding the ESLint configuration
+- Implémenter une interface front-end en React
+- Utiliser Redux pour gérer l'état de l'application
+- Interagir avec une API REST (login, user profile, transactions)
+- Protéger les routes selon l'état d'authentification
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Technologies utilisées
+
+- [React](https://reactjs.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [React Router](https://reactrouter.com/)
+- [Sass](https://sass-lang.com/) ou CSS Modules
+- [Vite](https://vitejs.dev/) (créateur de projet)
+
+---
+
+## 📦 Installation et lancement
+
+### 1. Cloner ce dépôt :
+```bash
+git clone https://github.com/EvolutionZ19/argentbank.git
+cd argentbank
