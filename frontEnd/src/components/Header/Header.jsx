@@ -1,85 +1,81 @@
-import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import argentBankLogo from '../../assets/logo/argentBankLogo.png';
+import { useLocation, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import argentBankLogo from "../../assets/logo/argentBankLogo.png";
 
 /**
- * Composant Header : affichage du logo et de la navigation en fonction de la page active
- * Le contenu change selon l'URL actuelle (page accueil, login, profil ou transactions)
+ * Composant Header : affiche la navigation selon la page active
+ * Utilise React Router pour la navigation sans rechargement
  */
 export default function Header() {
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
-  const isUserPage = location.pathname === '/profile';
-  const isSignInPage = location.pathname === '/login';
-  const isTransactionsPage = location.pathname === '/transactions';
+  const isHomePage = location.pathname === "/";
+  const isUserPage = location.pathname === "/profile";
+  const isSignInPage = location.pathname === "/login";
+  const isTransactionsPage = location.pathname === "/transactions";
 
-  // Récupère le prénom de l'utilisateur depuis le store Redux
   const getfirstName = useSelector((state) => state.user.firstName);
 
   return (
     <header>
-      <nav className='main-nav'>
-        {/* Accueil ou login : logo + bouton "Sign In" */}
-        {isHomePage || isSignInPage ? (
+      <nav className="main-nav">
+        {(isHomePage || isSignInPage) && (
           <>
-            <a className='main-nav-logo' href='/'>
+            <Link className="main-nav-logo" to="/">
               <img
-                className='main-nav-logo-image'
-                alt='Argent Bank Logo'
+                className="main-nav-logo-image"
+                alt="Argent Bank Logo"
                 src={argentBankLogo}
               />
-              <h1 className='sr-only'>Argent Bank</h1>
-            </a>
+              <h1 className="sr-only">Argent Bank</h1>
+            </Link>
             <div>
-              <a className='main-nav-item' href='/login'>
-                <i className='fa fa-user-circle'></i>
+              <Link className="main-nav-item" to="/login">
+                <i className="fa fa-user-circle"></i>
                 Sign In
-              </a>
+              </Link>
             </div>
           </>
-        ) : null}
+        )}
 
-        {/* Page profil : logo + nom + déconnexion + lien vers transactions */}
-        {isUserPage ? (
+        {isUserPage && (
           <>
-            <a className='main-nav-logo' href='/'>
+            <Link className="main-nav-logo" to="/">
               <img
-                className='main-nav-logo-image'
-                alt='Argent Bank Logo'
+                className="main-nav-logo-image"
+                alt="Argent Bank Logo"
                 src={argentBankLogo}
               />
-              <h1 className='sr-only'>Argent Bank</h1>
-            </a>
+              <h1 className="sr-only">Argent Bank</h1>
+            </Link>
             <div>
-              <a className='main-nav-item'>
-                <i className='fa fa-user-circle'></i>
+              <Link className="main-nav-item" to="/profile">
+                <i className="fa fa-user-circle"></i>
                 {getfirstName}
-              </a>
-              <a className='main-nav-item' href='/transactions'>
-                <i className='fa fa-file-text'></i>
+              </Link>
+              <Link className="main-nav-item" to="/transactions">
+                <i className="fa fa-file-text"></i>
                 Transactions
-              </a>
-              <a className='main-nav-item' href='/'>
-                <i className='fa fa-sign-out'></i>
+              </Link>
+              <Link className="main-nav-item" to="/login" onClick={() => localStorage.removeItem("authToken")}>
+                <i className="fa fa-sign-out"></i>
                 Sign Out
-              </a>
+              </Link>
             </div>
           </>
-        ) : null}
+        )}
 
-        {/* Page transactions : logo uniquement */}
-        {isTransactionsPage ? (
+        {isTransactionsPage && (
           <>
-            <a className='main-nav-logo' href='/'>
+            <Link className="main-nav-logo" to="/">
               <img
-                className='main-nav-logo-image'
-                alt='Argent Bank Logo'
+                className="main-nav-logo-image"
+                alt="Argent Bank Logo"
                 src={argentBankLogo}
               />
-              <h1 className='sr-only'>Argent Bank</h1>
-            </a>
+              <h1 className="sr-only">Argent Bank</h1>
+            </Link>
           </>
-        ) : null}
+        )}
       </nav>
     </header>
   );
