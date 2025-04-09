@@ -133,4 +133,12 @@ body {
     position: absolute;
     width: 1px;
   }
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid #ccc;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #888;
+  }
   
