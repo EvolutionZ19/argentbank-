@@ -18,6 +18,31 @@ function Transactions() {
     }
   }, [firstName, navigate]);
 
+  // liste mockée de transactions pour test local
+  const transactions = [
+    {
+      id: 1,
+      date: "27/03/2024",
+      description: "Paiement à Wonder Woman",
+      amount: "-$250.00",
+      balance: "$1,832.79",
+    },
+    {
+      id: 2,
+      date: "25/03/2024",
+      description: "Salaire Mars",
+      amount: "+$3,200.00",
+      balance: "$2,082.79",
+    },
+    {
+      id: 3,
+      date: "20/03/2024",
+      description: "Remboursement assurance",
+      amount: "+$150.00",
+      balance: "$882.79",
+    },
+  ];
+
   return (
     <main className="transactions-page">
       <div className="header">
@@ -38,18 +63,16 @@ function Transactions() {
             </tr>
           </thead>
           <tbody>
-            <TransactionRow
-              date="27/03/2024"
-              description="Paiement à Wonder Woman"
-              amount="-$250.00"
-              balance="$1,832.79"
-            />
-            <TransactionRow
-              date="25/03/2024"
-              description="Salaire Mars"
-              amount="+$3,200.00"
-              balance="$2,082.79"
-            />
+            {/* génération dynamique des lignes */}
+            {transactions.map((tx) => (
+              <TransactionRow
+                key={tx.id}
+                date={tx.date}
+                description={tx.description}
+                amount={tx.amount}
+                balance={tx.balance}
+              />
+            ))}
           </tbody>
         </table>
       </section>
