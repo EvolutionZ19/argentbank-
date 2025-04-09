@@ -2,10 +2,9 @@ import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import argentBankLogo from '../../assets/logo/argentBankLogo.png';
 
-
 /**
- * Header Component
- * @returns {JSX.Element} Header Component
+ * Composant Header : affichage du logo et de la navigation en fonction de la page active
+ * Le contenu change selon l'URL actuelle (page accueil, login, profil ou transactions)
  */
 export default function Header() {
   const location = useLocation();
@@ -14,11 +13,13 @@ export default function Header() {
   const isSignInPage = location.pathname === '/login';
   const isTransactionsPage = location.pathname === '/transactions';
 
+  // Récupère le prénom de l'utilisateur depuis le store Redux
   const getfirstName = useSelector((state) => state.user.firstName);
 
   return (
     <header>
       <nav className='main-nav'>
+        {/* Accueil ou login : logo + bouton "Sign In" */}
         {isHomePage || isSignInPage ? (
           <>
             <a className='main-nav-logo' href='/'>
@@ -37,6 +38,8 @@ export default function Header() {
             </div>
           </>
         ) : null}
+
+        {/* Page profil : logo + nom + déconnexion + lien vers transactions */}
         {isUserPage ? (
           <>
             <a className='main-nav-logo' href='/'>
@@ -52,6 +55,10 @@ export default function Header() {
                 <i className='fa fa-user-circle'></i>
                 {getfirstName}
               </a>
+              <a className='main-nav-item' href='/transactions'>
+                <i className='fa fa-file-text'></i>
+                Transactions
+              </a>
               <a className='main-nav-item' href='/'>
                 <i className='fa fa-sign-out'></i>
                 Sign Out
@@ -59,6 +66,8 @@ export default function Header() {
             </div>
           </>
         ) : null}
+
+        {/* Page transactions : logo uniquement */}
         {isTransactionsPage ? (
           <>
             <a className='main-nav-logo' href='/'>

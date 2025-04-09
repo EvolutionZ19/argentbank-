@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import TransactionRow from "../../components/TransactionRow/TransactionRow";
 
+/**
+ * Page Transactions affichant la liste des transactions de l'utilisateur.
+ * Chaque ligne est rendue via le composant TransactionRow.
+ */
 function Transactions() {
   const firstName = useSelector((state) => state.user.firstName);
   const navigate = useNavigate();
 
   // Redirection si l'utilisateur n'est pas authentifié
-  React.useEffect(() => {
+  useEffect(() => {
     if (!firstName) {
       navigate("/login");
     }
@@ -27,31 +32,24 @@ function Transactions() {
             <tr>
               <th>Date</th>
               <th>Description</th>
-              <th>Amount</th>
-              <th>Balance</th>
+              <th>Montant</th>
+              <th>Solde</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {/* Exemple de ligne statique */}
-            <tr>
-              <td>27/03/2024</td>
-              <td>Payment to Wonder Woman</td>
-              <td>-$250.00</td>
-              <td>$1,832.79</td>
-              <td>
-                <button>Details</button>
-              </td>
-            </tr>
-            <tr>
-              <td>25/03/2024</td>
-              <td>Salary March</td>
-              <td>+$3,200.00</td>
-              <td>$2,082.79</td>
-              <td>
-                <button>Details</button>
-              </td>
-            </tr>
+            <TransactionRow
+              date="27/03/2024"
+              description="Paiement à Wonder Woman"
+              amount="-$250.00"
+              balance="$1,832.79"
+            />
+            <TransactionRow
+              date="25/03/2024"
+              description="Salaire Mars"
+              amount="+$3,200.00"
+              balance="$2,082.79"
+            />
           </tbody>
         </table>
       </section>
