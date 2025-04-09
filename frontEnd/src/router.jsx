@@ -6,6 +6,8 @@ import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Transactions from "./pages/Transactions/Transactions";
+import NotFound from "./pages/NotFound/NotFound";
+
 
 function Router() {
   return (
@@ -20,7 +22,7 @@ function Router() {
           <Route path="/transactions" element={<Transactions />} />
         </Route>
       </Route>
-      <Route path="*" element={<h1>404 - Page non trouvée</h1>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
