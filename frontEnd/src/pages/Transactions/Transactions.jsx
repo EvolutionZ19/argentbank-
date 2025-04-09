@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TransactionRow from "../../components/TransactionRow/TransactionRow";
+import transactions from "../../data/transactions";
 
 /**
  * Page Transactions affichant la liste des transactions de l'utilisateur.
@@ -17,31 +18,6 @@ function Transactions() {
       navigate("/login");
     }
   }, [firstName, navigate]);
-
-  // liste mockée de transactions pour test local
-  const transactions = [
-    {
-      id: 1,
-      date: "27/03/2024",
-      description: "Paiement à Wonder Woman",
-      amount: "-$250.00",
-      balance: "$1,832.79",
-    },
-    {
-      id: 2,
-      date: "25/03/2024",
-      description: "Salaire Mars",
-      amount: "+$3,200.00",
-      balance: "$2,082.79",
-    },
-    {
-      id: 3,
-      date: "20/03/2024",
-      description: "Remboursement assurance",
-      amount: "+$150.00",
-      balance: "$882.79",
-    },
-  ];
 
   return (
     <main className="transactions-page">
