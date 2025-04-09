@@ -5,6 +5,7 @@ import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Transactions from "./pages/Transactions/Transactions";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
         {/* Routes protégées */}
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/transactions" element={<Transactions />} />
         </Route>
       </Route>
       <Route path="*" element={<h1>404 - Page non trouvée</h1>} />
