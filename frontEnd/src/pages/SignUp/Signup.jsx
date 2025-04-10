@@ -1,39 +1,25 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import signUpMiddleware from "../../redux/middleware/signUpMiddleware";
 import "./SignUp.css";
 
 /**
  * Page de création de compte
  */
 function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (formData) => {
     try {
-      const response = await fetch("http://localhost:3001/api/v1/user/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, firstName, lastName }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("✅ Utilisateur créé :", data);
-        navigate("/login");
-      } else {
-        console.error("❌ Erreur d'inscription :", data.message);
-      }
+      await dispatch(signUpMiddleware(formData));
+      navigate("/login");
     } catch (error) {
-      console.error("❌ Erreur réseau :", error);
+      console.error("Erreur middleware sign up :", error);
+    } finally {
+      reset();
     }
   };
 
@@ -43,54 +29,50 @@ function SignUp() {
         <i className="fa fa-user-circle login-icon"></i>
         <h1>Sign Up</h1>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input-wrapper">
             <label htmlFor="email">Email</label>
             <input
+              {...register("email", { required: true })}
               type="email"
               id="email"
               placeholder="ex: tony@stark.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </div>
 
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
             <input
+              {...register("password", { required: true })}
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
 
           <div className="input-wrapper">
             <label htmlFor="firstName">Firstname</label>
             <input
+              {...register("firstName", { required: true })}
               type="text"
               id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
             />
           </div>
 
           <div className="input-wrapper">
             <label htmlFor="lastName">Lastname</label>
             <input
+              {...register("lastName", { required: true })}
               type="text"
               id="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
             />
           </div>
 
-          <button type="submit" className="login-button">Créer un compte</button>
-          <a href="/login" className="login-button">Retour</a>
+          <button type="submit" className="login-button">
+            Créer un compte
+          </button>
+          <a href="/login" className="login-button">
+            Retour
+          </a>
         </form>
       </section>
     </main>
