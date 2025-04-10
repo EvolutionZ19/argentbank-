@@ -1,39 +1,47 @@
-import React from "react";
-import "./Home.css";
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import Banner from '../../components/Banner/Banner';
 
-/*
- * Page d'accueil 
- * Affiche une bannière promotionnelle et trois avantages client
- */
-function Home() {
+import FeaturesItem from '../../components/FeaturesItem/FeaturesItem';
+import './Home.css';
+
+export default function Home() {
+  const featureTitleChat = 'You are our #1 priority';
+  const featureTitleMoney = 'More savings means higher rates';
+  const featureTitleSecurity = 'Security you can trust';
+
+  const featureDescriptionChat =
+    'Need to talk to a representative? You can get in touch through our 24/7 chat or through a phone call in less than 5 minutes.';
+  const featureDescriptionMoney =
+    'The more you save with us, the higher your interest rate will be!';
+  const featureDescriptionSecurity =
+    'We use top of the line encryption to make sure your data and money is always safe.';
+
   return (
-    <main>
-      <div className="hero">
-        <section className="hero-content">
-          <h2>Chez Argent Bank, votre avenir financier est entre de bonnes mains</h2>
-          <p>Profitez d'une gestion simple, rapide et sécurisée de vos comptes bancaires.</p>
+    <div className="container-home">
+      <Header />
+      <main>
+        <Banner />
+        <section className="features">
+          <h2 className="sr-only">Features</h2>
+          <FeaturesItem
+            icon="/img/icon-chat.png"
+            title={featureTitleChat}
+            description={featureDescriptionChat}
+          />
+          <FeaturesItem
+            icon="/img/icon-money.png"
+            title={featureTitleMoney}
+            description={featureDescriptionMoney}
+          />
+          <FeaturesItem
+            icon="/img/icon-security.png"
+            title={featureTitleSecurity}
+            description={featureDescriptionSecurity}
+          />
         </section>
-      </div>
-
-      <section className="features">
-        <div className="feature-item">
-          <i className="fa fa-money feature-icon" aria-hidden="true"></i>
-          <h3>Pas de frais cachés</h3>
-          <p>Nos comptes sont sans frais d'ouverture, de gestion ou de clôture.</p>
-        </div>
-        <div className="feature-item">
-          <i className="fa fa-shield feature-icon" aria-hidden="true"></i>
-          <h3>Transactions sécurisées</h3>
-          <p>Nous utilisons les technologies les plus avancées pour sécuriser vos données.</p>
-        </div>
-        <div className="feature-item">
-          <i className="fa fa-thumbs-up feature-icon" aria-hidden="true"></i>
-          <h3>Service client réactif</h3>
-          <p>Nos conseillers sont disponibles 7j/7 pour répondre à vos besoins.</p>
-        </div>
-      </section>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 }
-
-export default Home;

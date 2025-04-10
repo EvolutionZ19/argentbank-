@@ -1,9 +1,14 @@
-import "./Login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setFirstName } from "../../store/userReducer";
 
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+
+/**
+ * Page de connexion de l'utilisateur.
+ */
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,17 +33,13 @@ function Login() {
         const token = data.body.token;
         localStorage.setItem("authToken", token);
 
-        // Récupération du profil juste après login
-        const profileResponse = await fetch(
-          "http://localhost:3001/api/v1/user/profile",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const profileResponse = await fetch("http://localhost:3001/api/v1/user/profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const profileData = await profileResponse.json();
 
@@ -57,37 +58,48 @@ function Login() {
   };
 
   return (
-    <main className="login-page">
-      <section className="login-form">
-        <h1>Connexion</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="ex: test@banque.fr"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+    <div className="container-login">
+      <Header />
+      <main className="main bg-dark-login">
+        <section className="login-content">
+          <i className="fa fa-user-circle login-icon"></i>
+          <h1>Sign In</h1>
 
-          <div>
-            <label htmlFor="password">Mot de passe</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="tony@stark.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-          <button type="submit">Se connecter</button>
-        </form>
-      </section>
-    </main>
+            <div className="input-wrapper">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-remember">
+              <input type="checkbox" id="remember-me" />
+              <label htmlFor="remember-me">Remember me</label>
+            </div>
+
+            <button type="submit" className="login-button">Sign In</button>
+          </form>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
