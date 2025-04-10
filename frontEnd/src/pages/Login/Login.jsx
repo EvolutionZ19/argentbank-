@@ -2,13 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setFirstName } from "../../store/userReducer";
+import "./Login.css";
 
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-
-/**
- * Page de connexion de l'utilisateur.
- */
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,7 +54,6 @@ function Login() {
 
   return (
     <div className="container-login">
-      <Header />
       <main className="main bg-dark-login">
         <section className="login-content">
           <i className="fa fa-user-circle login-icon"></i>
@@ -95,10 +89,11 @@ function Login() {
             </div>
 
             <button type="submit" className="login-button">Sign In</button>
+
+            <a href="/signup" className="login-button">Sign Up</a>
           </form>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

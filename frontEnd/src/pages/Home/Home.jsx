@@ -1,7 +1,5 @@
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
-import Banner from '../../components/Banner/Banner';
 
+import Banner from '../../components/Banner/Banner';
 import FeaturesItem from '../../components/FeaturesItem/FeaturesItem';
 import './Home.css';
 
@@ -19,7 +17,6 @@ export default function Home() {
 
   return (
     <div className="container-home">
-      <Header />
       <main>
         <Banner />
         <section className="features">
@@ -41,7 +38,6 @@ export default function Home() {
           />
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
