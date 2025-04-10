@@ -7,6 +7,7 @@ import Layout from "./components/Layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Transactions from "./pages/Transactions/Transactions";
 import NotFound from "./pages/NotFound/NotFound";
+import SignUp from "./pages/SignUp/SignUp";
 
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
 
         {/* Routes protégées */}
         <Route element={<ProtectedRoute />}>
