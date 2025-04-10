@@ -1,56 +1,40 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getProfile } from "../../redux/slice/userSlice";
+
+import logInMiddleware from "../../redux/middleware/logInMiddleware";
 import "./Login.css";
 
+/**
+ * Page de connexion utilisateur.
+ */
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isConnected = useSelector((state) => state.user.isConnected);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    try {
-      const response = await fetch("http://localhost:3001/api/v1/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const token = data.body.token;
-        localStorage.setItem("authToken", token);
-
-        const profileResponse = await fetch("http://localhost:3001/api/v1/user/profile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const profileData = await profileResponse.json();
-
-        if (profileResponse.ok) {
-          dispatch(getProfile(profileData.body));
-          navigate("/profile");
-        } else {
-          console.error("Erreur récupération profil :", profileData.message);
-        }
-      } else {
-        console.error("Erreur de connexion :", data.message);
-      }
-    } catch (error) {
-      console.error("Erreur réseau :", error);
-    }
+  /**
+   * Envoi du formulaire : déclenche le middleware de connexion.
+   */
+  const onSubmit = (data) => {
+    dispatch(logInMiddleware(data));
   };
+
+  /**
+   * Redirige vers /profile si connecté.
+   */
+  useEffect(() => {
+    if (isConnected) {
+      navigate("/profile");
+    }
+  }, [isConnected, navigate]);
 
   return (
     <div className="container-login">
@@ -59,17 +43,18 @@ function Login() {
           <i className="fa fa-user-circle login-icon"></i>
           <h1>Sign In</h1>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="input-wrapper">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
                 placeholder="tony@stark.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...register("email", { required: true })}
               />
+              {errors.email && (
+                <p className="error-msg">Ce champ est requis</p>
+              )}
             </div>
 
             <div className="input-wrapper">
@@ -77,10 +62,11 @@ function Login() {
               <input
                 type="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                {...register("password", { required: true })}
               />
+              {errors.password && (
+                <p className="error-msg">Ce champ est requis</p>
+              )}
             </div>
 
             <div className="input-remember">
@@ -88,8 +74,13 @@ function Login() {
               <label htmlFor="remember-me">Remember me</label>
             </div>
 
-            <button type="submit" className="login-button">Sign In</button>
-            <a href="/signup" className="login-button">Sign Up</a>
+            <button type="submit" className="login-button">
+              Sign In
+            </button>
+
+            <a href="/signup" className="login-button">
+              Sign Up
+            </a>
           </form>
         </section>
       </main>
