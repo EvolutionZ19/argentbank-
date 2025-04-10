@@ -1,0 +1,164 @@
+swagger: "2.0"
+info:
+  title: Bank Argent API documentation
+  description: API for user authentication and transactions
+  version: "1.0.0"
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+
+paths:
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: Login user
+      description: Authenticates a user and returns a token
+      parameters:
+        - in: body
+          name: body
+          required: true
+          description: User login credentials
+          schema:
+            $ref: '#/definitions/LoginRequest'
+      responses:
+        200:
+          description: Login successful
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        400:
+          description: Invalid input
+
+  /user/signup:
+    post:
+      tags:
+        - User
+      summary: Sign up user
+      description: Registers a new user
+      parameters:
+        - in: body
+          name: body
+          required: true
+          description: New user data
+          schema:
+            $ref: '#/definitions/UserSignUp'
+      responses:
+        201:
+          description: User created
+          schema:
+            $ref: '#/definitions/UserCreatedResponse'
+        400:
+          description: Invalid input
+
+  /user/profile:
+    post:
+      tags:
+        - User
+      summary: Get user profile
+      description: Retrieves user profile data (secured)
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: Bearer token
+      responses:
+        200:
+          description: User profile returned
+          schema:
+            $ref: '#/definitions/UserProfileResponse'
+        401:
+          description: Unauthorized
+
+    put:
+      tags:
+        - User
+      summary: Update user profile
+      description: Updates user first name or last name
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfileUpdate'
+      responses:
+        200:
+          description: Profile updated
+        400:
+          description: Invalid input
+
+# Definitions
+
+definitions:
+  LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+
+  UserSignUp:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+
+  UserCreatedResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+
+  UserProfileResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+          firstName:
+            type: string
+          lastName:
+            type: string
+
+  UserProfileUpdate:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
