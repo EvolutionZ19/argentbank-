@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TransactionRow from "../../components/TransactionRow/TransactionRow";
 import transactions from "../../data/transactions";
+import "./Transactions.css";
 
 /**
  * Page Transactions affichant la liste des transactions de l'utilisateur.
- * Chaque ligne est rendue via le composant TransactionRow.
  */
 function Transactions() {
   const firstName = useSelector((state) => state.user.firstName);
   const navigate = useNavigate();
 
-  // Redirection si l'utilisateur n'est pas authentifié
   useEffect(() => {
     if (!firstName) {
       navigate("/login");
@@ -20,11 +19,14 @@ function Transactions() {
   }, [firstName, navigate]);
 
   return (
-    <main className="transactions-page">
-      <div className="header">
-        <h1>Transactions</h1>
-        <p>Bonjour, {firstName}</p>
-      </div>
+    <div className="container-account">
+      <section className="account">
+        <div className="account-content-wrapper-transactions">
+          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
+          <p className="account-amount">$2,082.79</p>
+          <p className="account-amount-description">Available Balance</p>
+        </div>
+      </section>
 
       <section className="transactions-section">
         <h2 className="sr-only">Liste des transactions</h2>
@@ -39,7 +41,6 @@ function Transactions() {
             </tr>
           </thead>
           <tbody>
-            {/* génération dynamique des lignes */}
             {transactions.map((tx) => (
               <TransactionRow
                 key={tx.id}
@@ -52,7 +53,7 @@ function Transactions() {
           </tbody>
         </table>
       </section>
-    </main>
+    </div>
   );
 }
 
