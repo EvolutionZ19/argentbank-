@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setFirstName } from "../../redux/store/userReducer";
+import { getProfile } from "../../redux/slice/userSlice";
 import "./Login.css";
 
 function Login() {
@@ -39,7 +39,7 @@ function Login() {
         const profileData = await profileResponse.json();
 
         if (profileResponse.ok) {
-          dispatch(setFirstName(profileData.body.firstName));
+          dispatch(getProfile(profileData.body));
           navigate("/profile");
         } else {
           console.error("Erreur récupération profil :", profileData.message);
@@ -89,7 +89,6 @@ function Login() {
             </div>
 
             <button type="submit" className="login-button">Sign In</button>
-
             <a href="/signup" className="login-button">Sign Up</a>
           </form>
         </section>
