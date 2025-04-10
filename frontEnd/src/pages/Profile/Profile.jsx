@@ -1,15 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import editUserProfileMiddleware from "../../redux/middleware/editUserProfileMiddleware";
 
 /**
  * Page de profil utilisateur
  */
 function Profile() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
+  const userFirstName = useSelector((state) => state.user.firstName);
+  const userLastName = useSelector((state) => state.user.lastName);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState(userFirstName || "");
+  const [lastName, setLastName] = useState(userLastName || "");
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+    setFirstName(userFirstName); // remets les valeurs d'origine
+    setLastName(userLastName);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(editUserProfileMiddleware(token, { firstName, lastName }));
+    setIsEditing(false);
+  };
+
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Stark!</h1>
-        <button className="edit-button">Edit Name</button>
+        {!isEditing ? (
+          <>
+            <h1>
+              Welcome back<br />{userFirstName} {userLastName}!
+            </h1>
+            <button className="edit-button" onClick={handleToggleEdit}>
+              Edit Name
+            </button>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="top-container-editName">
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First name"
+              />
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last name"
+              />
+            </div>
+            <div className="bottom-container-editName">
+              <button type="submit" className="button-save">Save</button>
+              <button
+                type="button"
+                className="button-cancel"
+                onClick={handleToggleEdit}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       <h2 className="sr-only">Accounts</h2>
