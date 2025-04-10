@@ -1,10 +1,9 @@
-import { signIn, showError } from '../slice/userSlice';
+import { signIn, showError, getProfile } from '../slice/userSlice';
 
 /**
  * Middleware de connexion utilisateur.
- * Appelle l'API pour authentifier l'utilisateur.
- * @param {Object} formDataSignIn - Contient l'email et le mot de passe.
- * @returns {Function}
+ * Authentifie et récupère le profil utilisateur.
+ * @param {Object} formDataSignIn - email + password
  */
 const logInMiddleware = (formDataSignIn) => {
   return async (dispatch) => {
@@ -22,7 +21,32 @@ const logInMiddleware = (formDataSignIn) => {
       if (response.ok) {
         const token = data.body.token;
         localStorage.setItem("authToken", token);
+
+        // Dispatch du token dans Redux
         dispatch(signIn({ token }));
+
+        // Appel au profil utilisateur
+        const profileResponse = await fetch("http://localhost:3001/api/v1/user/profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const profileData = await profileResponse.json();
+
+        if (profileResponse.ok) {
+          dispatch(getProfile({
+            email: profileData.body.email,
+            firstName: profileData.body.firstName,
+            lastName: profileData.body.lastName,
+            id: profileData.body.id
+          }));
+        } else {
+          dispatch(showError({ errorMessage: profileData.message }));
+        }
+
         alert("Connexion réussie");
       } else {
         dispatch(showError({ errorMessage: data.message }));
